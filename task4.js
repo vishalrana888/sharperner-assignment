@@ -24,7 +24,7 @@
 //  thirditem.style.display = 'none' ;
 
 
- //QuerySelectorALL
+//  QuerySelectorALL
 
 //  var titles = document.querySelectorAll('.title');
 // console.log(titles);
