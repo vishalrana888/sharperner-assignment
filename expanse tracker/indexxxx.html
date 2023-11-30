@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Expense Tracker</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="container mt-4">
+  <h1 class="text-center mb-4">Expense Tracker</h1>
+
+  <!-- Category selection tabs -->
+  <ul class="nav nav-tabs" id="categoriesTab" role="tablist">
+    <li class="nav-item">
+      <button class="nav-link active" id="allExpensesTab" data-bs-toggle="tab" data-bs-target="#allExpenses" type="button" role="tab" aria-controls="allExpenses" aria-selected="true">All Expenses</button>
+    </li>
+  </ul>
+
+  <!-- Category input and button for adding a new category -->
+  <div class="input-group mb-3">
+    <input type="text" class="form-control" id="customCategory" placeholder="Enter category name">
+    <button class="btn btn-outline-secondary" type="button" id="addCustomCategory">Add Category</button>
+  </div>
+
+  <!-- Expense input form -->
+  <form id="expenseForm" class="mb-4">
+    <div class="mb-3">
+      <label for="expenseDescription" class="form-label">Expense Description</label>
+      <input type="text" class="form-control" id="expenseDescription" required>
+    </div>
+    <div class="mb-3">
+      <label for="expenseAmount" class="form-label">Amount</label>
+      <input type="number" class="form-control" id="expenseAmount" required>
+    </div>
+    <div class="mb-3">
+      <label for="expenseCategory" class="form-label">Category</label>
+      <select class="form-select" id="expenseCategory" required>
+        <option value="">Select category...</option>
+        <!-- Add categories dynamically here -->
+      </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Add Expense</button>
+  </form>
+
+  <!-- Display expenses -->
+  <div id="expenseList">
+    <!-- Expenses will be displayed here -->
+  </div>
+</div>
+
+<script src="app.js"></script> <!-- JavaScript file to handle logic -->
+</body>
+</html>
