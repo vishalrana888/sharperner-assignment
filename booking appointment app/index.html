@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appointment Booking App</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.2/axios.min.js"></script>    
+</head>
+<body>
+    <div class="container">
+        <h1>Appointment Booking</h1>
+        <form id="appointmentForm">
+            <label for="name">Name:</label>
+            <input type="text" id="name" required>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" required>
+
+            <label for="phone">Phone Number:</label>
+            <input type="tel" id="phone" required>
+
+            <button type="submit">Book Appointment</button>
+        </form>
+
+        <div id="appointmentsList">
+            <h2>Appointments:</h2>
+            <ul id="appointments"></ul>
+        </div>
+
+        <div id="userDataDisplay">
+            <h2>Entered User Data:</h2>
+            <p id="enteredUserData"></p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
