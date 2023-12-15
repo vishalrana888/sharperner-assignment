@@ -1,109 +1,124 @@
-document.addEventListener('DOMContentLoaded',  ()=> {
-  axios.get("https://crudcrud.com/api/c672e5d0ab014f27a52ed76e6eb5dd3e/appointmentdata")
-  .then((response)=>{
-      console.log(response)
-  })
-  .catch((error)=>{
-      console.log(error)
-  })
-  const form = document.getElementById('appointmentForm');
-  const nameInput = document.getElementById('name');
-  const emailInput = document.getElementById('email');
-  const phoneInput = document.getElementById('phone');
-  const appointmentsList = document.getElementById('appointments');
-  const enteredDataDisplay = document.getElementById('enteredUserData'); // Updated display area
+document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('appointmentForm');
+    const nameInput = document.getElementById('name');
+    const emailInput = document.getElementById('email');
+    const phoneInput = document.getElementById('phone');
+    const appointmentsList = document.getElementById('appointments');
+    const enteredDataDisplay = document.getElementById('enteredUserData'); // Updated display area
 
-  form.addEventListener('submit', function (e) {
-      e.preventDefault();
+    // Fetch appointments from the API and display them on the screen
+    function fetchAppointmentsAndDisplay() {
+        axios.get("https://crudcrud.com/api/c672e5d0ab014f27a52ed76e6eb5dd3e/appointmentdata")
+            .then((response) => {
+                const appointments = response.data;
+                updateAppointmentsList(appointments);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
 
-      const name = nameInput.value;
-      const email = emailInput.value;
-      const phone = phoneInput.value;
+    form.addEventListener('submit', function (e) {
+        e.preventDefault();
 
-      if (name && email && phone) {
-          const appointment = { name, email, phone };
-          saveAppointment(appointment);
-          updateAppointmentsList();
-          clearFormInputs();
+        const name = nameInput.value;
+        const email = emailInput.value;
+        const phone = phoneInput.value;
 
-          // Display entered data below the screen
-          enteredDataDisplay.textContent = `Name: ${name}, Email: ${email}, Phone: ${phone}`;
-      } else {
-          alert('Please fill in all fields');
-      }
-  });
+        if (name && email && phone) {
+            const appointment = { name, email, phone };
+            saveAppointment(appointment);
+        } else {
+            alert('Please fill in all fields');
+        }
+    });
 
-  function saveAppointment(appointment) {
-      axios.post("https://crudcrud.com/api/c672e5d0ab014f27a52ed76e6eb5dd3e/appointmentdata", appointment)
-          .then((response) => {
-              console.log(response.data);
-          })
-          .catch((error) => {
-              console.error("Error saving appointment:", error);
-          });
-  }
+    function saveAppointment(appointment) {
+        axios.post("https://crudcrud.com/api/c672e5d0ab014f27a52ed76e6eb5dd3e/appointmentdata", appointment)
+            .then((response) => {
+                console.log(response.data);
+                fetchAppointmentsAndDisplay(); // Fetch and display updated appointments after saving
+                clearFormInputs();
+            })
+            .catch((error) => {
+                console.error("Error saving appointment:", error);
+            });
+    }
 
-  function updateAppointmentsList() {
-      const appointments = JSON.parse(localStorage.getItem('appointments')) || [];
-      appointmentsList.innerHTML = '';
+    function updateAppointmentsList(appointments) {
+        appointmentsList.innerHTML = '';
 
-      appointments.forEach((appointment, index) => {
-          const listItem = document.createElement('li');
-          listItem.textContent = `${appointment.name} - ${appointment.email} - ${appointment.phone}`;
+        appointments.forEach((appointment) => {
+            const listItem = document.createElement('li');
+            listItem.textContent = `${appointment.name} - ${appointment.email} - ${appointment.phone}`;
 
-          const deleteButton = createButton('Delete', () => deleteAppointment(index));
-          const editButton = createButton('Edit', () => editAppointment(index));
+            const editButton = createButton('Edit', () => editDisplayedAppointment(appointment));
+            const deleteButton = createButton('Delete', () => deleteDisplayedAppointment(appointment._id));
 
-          listItem.appendChild(deleteButton);
-          listItem.appendChild(editButton);
+            listItem.appendChild(editButton);
+            listItem.appendChild(deleteButton);
 
-          appointmentsList.appendChild(listItem);
-      });
-  }
+            appointmentsList.appendChild(listItem);
+        });
+    }
 
-  function createButton(text, onClick) {
-      const button = document.createElement('button');
-      button.textContent = text;
-      button.addEventListener('click', onClick);
-      return button;
-  }
+    function createButton(text, onClick) {
+        const button = document.createElement('button');
+        button.textContent = text;
+        button.addEventListener('click', onClick);
+        return button;
+    }
 
-  function deleteAppointment(index) {
-      let appointments = JSON.parse(localStorage.getItem('appointments')) || [];
-      appointments.splice(index, 1);
-      localStorage.setItem('appointments', JSON.stringify(appointments));
-      updateAppointmentsList();
-  }
+    function deleteDisplayedAppointment(appointmentId) {
+        axios.delete(`https://crudcrud.com/api/c672e5d0ab014f27a52ed76e6eb5dd3e/appointmentdata/${appointmentId}`)
+            .then((response) => {
+                console.log(response.data);
+                fetchAppointmentsAndDisplay(); // Fetch and display updated appointments after deletion
+            })
+            .catch((error) => {
+                console.error("Error deleting appointment:", error);
+            });
+    }
 
-  function editAppointment(index) {
-      let appointments = JSON.parse(localStorage.getItem('appointments')) || [];
-      const appointmentToEdit = appointments[index];
+    function editDisplayedAppointment(appointment) {
+        nameInput.value = appointment.name;
+        emailInput.value = appointment.email;
+        phoneInput.value = appointment.phone;
 
-      // Populate form with the selected appointment's data
-      nameInput.value = appointmentToEdit.name;
-      emailInput.value = appointmentToEdit.email;
-      phoneInput.value = appointmentToEdit.phone;
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            const updatedName = nameInput.value;
+            const updatedEmail = emailInput.value;
+            const updatedPhone = phoneInput.value;
 
-      // Show selected appointment details on the screen
-      enteredDataDisplay.textContent = `Selected Appointment: ${appointmentToEdit.name} - ${appointmentToEdit.email} - ${appointmentToEdit.phone}`;
+            if (updatedName && updatedEmail && updatedPhone) {
+                appointment.name = updatedName;
+                appointment.email = updatedEmail;
+                appointment.phone = updatedPhone;
 
-      // Remove the selected appointment from the list
-      appointments.splice(index, 1);
+                axios.put(`https://crudcrud.com/api/c672e5d0ab014f27a52ed76e6eb5dd3e/appointmentdata/${appointment._id}`, appointment)
+                    .then((response) => {
+                        console.log(response.data);
+                        fetchAppointmentsAndDisplay(); // Fetch and display updated appointments after editing
+                        clearFormInputs();
+                    })
+                    .catch((error) => {
+                        console.error("Error updating appointment:", error);
+                    });
+            } else {
+                alert('Please fill in all fields');
+            }
+        });
+    }
 
-      // Update local storage and the UI
-      localStorage.setItem('appointments', JSON.stringify(appointments));
-      updateAppointmentsList();
-  }
+    function clearFormInputs() {
+        nameInput.value = '';
+        emailInput.value = '';
+        phoneInput.value = '';
+        enteredDataDisplay.textContent = '';
+    }
 
-  function clearFormInputs() {
-      nameInput.value = '';
-      emailInput.value = '';
-      phoneInput.value = '';
-
-      // Clear entered data display below the screen
-      enteredDataDisplay.textContent = '';
-  }
-
-  // Initial update
-  updateAppointmentsList();
+    // Fetch appointments on page load and display them
+    fetchAppointmentsAndDisplay();
 });
+
