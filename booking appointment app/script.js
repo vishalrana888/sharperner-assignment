@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Fetch appointments from the API and display them on the screen
     function fetchAppointmentsAndDisplay() {
-        axios.get("https://crudcrud.com/api/d54a3c7aea824eb485c73c97c5658b50/appointmentdata")
+        axios.get("https://crudcrud.com/api/d54a3c7aea824eb485c73c97c5658b50/appointmentData")
             .then((response) => {
                 const appointments = response.data;
                 updateAppointmentsList(appointments);
@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     function saveAppointment(appointment) {
-        axios.post("https://crudcrud.com/api/d54a3c7aea824eb485c73c97c5658b50/appointmentdata", appointment)
+        axios.post("https://crudcrud.com/api/d54a3c7aea824eb485c73c97c5658b50/appointmentData", appointment)
             .then((response) => {
                 console.log(response.data);
                 fetchAppointmentsAndDisplay(); // Fetch and display updated appointments after saving
@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function deleteDisplayedAppointment(appointmentId) {
-        axios.delete(`https://crudcrud.com/api/d54a3c7aea824eb485c73c97c5658b50/appointmentdata/${appointmentId}`)
+        axios.delete(`https://crudcrud.com/api/d54a3c7aea824eb485c73c97c5658b50/appointmentData/${appointmentId}`)
             .then((response) => {
                 console.log(response.data);
                 fetchAppointmentsAndDisplay(); // Fetch and display updated appointments after deletion
@@ -96,7 +96,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 appointment.email = updatedEmail;
                 appointment.phone = updatedPhone;
 
-                axios.put(`https://crudcrud.com/api/d54a3c7aea824eb485c73c97c5658b50/appointmentdata/${appointment._id}`, appointment)
+                axios.put(`https://crudcrud.com/api/d54a3c7aea824eb485c73c97c5658b50/appointmentData/${appointment._id}`, appointment)
                     .then((response) => {
                         console.log(response.data);
                         fetchAppointmentsAndDisplay(); // Fetch and display updated appointments after editing
