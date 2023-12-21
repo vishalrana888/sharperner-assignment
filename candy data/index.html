@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Candy Shop</title>
+    <!-- Include any necessary CSS files -->
+    <link rel="stylesheet" href="candy.css">
+</head>
+<body>
+
+    <h2>Candy Shop</h2>
+
+    <!-- Form to add new candy items -->
+    <form id="candyForm">
+        <!-- Input fields for candy details -->
+        <label for="candyName">Candy Name:</label>
+        <input type="text" id="candyName" name="candyName" required>
+
+        <label for="description">Description:</label>
+        <textarea id="description" name="description" rows="4" required></textarea>
+
+        <label for="price">Price:</label>
+        <input type="number" id="price" name="price" step="0.01" required>
+
+        <label for="quantity">Quantity:</label>
+        <input type="number" id="quantity" name="quantity" required>
+
+        <!-- Button to add a new candy item -->
+        <button type="button" id="addItemButton">Add Item</button>
+    </form>
+
+    <!-- Container to display candy items -->
+    <div id="displayData"></div>
+
+    <!-- Update form for modifying candy details -->
+    <div id="updateForm" style="display: none;">
+        <!-- Update form fields -->
+        <label for="updateCandyName">Candy Name:</label>
+        <input type="text" id="updateCandyName" name="updateCandyName">
+
+        <label for="updateDescription">Description:</label>
+        <textarea id="updateDescription" name="updateDescription" rows="4"></textarea>
+
+        <label for="updatePrice">Price:</label>
+        <input type="number" id="updatePrice" name="updatePrice" step="0.01">
+
+        <label for="updateQuantity">Quantity:</label>
+        <input type="number" id="updateQuantity" name="updateQuantity">
+
+        <!-- Button to update candy item details -->
+        <button type="button" id="updateItemButton">Update Item</button>
+    </div>
+
+    <!-- Include the necessary Axios library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.4/axios.min.js"></script>
+    <!-- Include your JavaScript file -->
+    <script src="candy.js"></script>
+</body>
+</html>
